@@ -1,0 +1,12 @@
+.nav {
+    grid-area: n;
+    background-color: aquamarine;
+}
+
+.link{
+    color: white;
+}
+
+.link_active{
+    color: blueviolet;
+}
