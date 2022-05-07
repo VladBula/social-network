@@ -19,7 +19,10 @@ const Navbar = () => {
        <div  className={s.item}>
            <a>Music</a>
        </div>
-       <br/>
+       <div className={s.item}>
+           <NavLink /*className={classLink}*/ to="/users">Users</NavLink>
+       </div>
+
        <div  className={s.item}>
            <a>Settings</a>
        </div>

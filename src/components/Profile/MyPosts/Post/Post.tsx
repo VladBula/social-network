@@ -3,7 +3,7 @@ import s from './Post.module.css'
 
 
 type PostPropsType = {
-    message: string
+    message: string | undefined
     likesCount:number
     id:number
 }
