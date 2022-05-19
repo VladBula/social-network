@@ -81,7 +81,7 @@ export const setUsersAC = (users: Array<UsersType>) => {
 
 export const setCurrentPageAC = (currentPage:number) => {
     return{
-        type:"SET-CURRENT-PAGE",
+        type:"SET_CURRENT_PAGE",
         currentPage
     } as const
 }
