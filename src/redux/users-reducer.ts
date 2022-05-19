@@ -24,6 +24,9 @@ export type UsersType = {
 
 let initialState = {
      users: [ ] as Array<UsersType>,
+    pageSize:5,
+    totalUsersCount:40,
+    currentPage:2
 
 }
 
@@ -44,7 +47,10 @@ export const usersReducer = (state: initialStateType = initialState, action: Act
             }
         }
         case "SET_USERS": {
-            return {...state, users:  [...state.users, ...action.users]}
+            return {...state, users:  action.users}
+        }
+        case "SET_CURRENT_PAGE": {
+            return {...state, currentPage: action.currentPage}
         }
         default :
             return state
@@ -73,4 +79,10 @@ export const setUsersAC = (users: Array<UsersType>) => {
     } as const
 }
 
+export const setCurrentPageAC = (currentPage:number) => {
+    return{
+        type:"SET-CURRENT-PAGE",
+        currentPage
+    } as const
+}
 

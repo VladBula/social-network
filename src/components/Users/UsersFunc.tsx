@@ -1,35 +1,27 @@
 import React from 'react';
-import userAnnaPhoto from "../../images/anna.jpg";
-import s from "./Users.module.css";
-import axios from "axios";
-import {UsersType} from "../../redux/users-reducer";
+import {UsersContainerPropsType} from "./UsersContainer";
+import s from './Users.module.css'
+import axios from 'axios';
+import userAnnaPhoto from '../../images/anna.jpg'
 
-interface Props {
-    users:Array<UsersType>
-    setUsers:(users:UsersType[])=>void
-    follow: (userId: number) => void
-    unfollow: (userId: number) => void
-}
 
-class Users extends React.Component<Props>{
-
-    // constructor(props:Props) {
-    //     super(props:Props);
-    // }
-
-   componentDidMount()
-    {
+const UsersFunc = (props: UsersContainerPropsType) => {
+    let getUsers = () => {if (props.users.length === 0) {
 
         axios.get("https://social-network.samuraijs.com/api/1.0/users").then(response => {
-            this.props.setUsers(response.data.items)
+            props.setUsers(response.data.items)
         })
 
-    }
+    }}
 
-    render(){
-        return <div>
 
-            {this.props.users.map(u =>
+
+    return (
+
+        <div>
+            <button onClick={getUsers}>Get Users</button>
+
+            {props.users.map(u =>
                 <div key={u.id}>
                 <span>
                 <div>
@@ -39,10 +31,10 @@ class Users extends React.Component<Props>{
                 </div>
                 <div>
                     {u.followed ? <button onClick={() => {
-                            this.props.unfollow(u.id)
+                            props.unfollow(u.id)
                         }}>Unfollow</button> :
                         <button onClick={() => {
-                            this.props.follow(u.id)
+                            props.follow(u.id)
                         }}>Follow</button>}
                 </div>
                 </span>
@@ -52,13 +44,12 @@ class Users extends React.Component<Props>{
                             <div>{u.status}</div>
                         </span>
                         <span>
-                            <div>{'location'}</div>
-                            <div>{'location'}</div>
+                            <div>{}</div>
+                            <div>{}</div>
                         </span>
                     </span>
                 </div>
             )}
         </div>
-    }
-}
-export default Users;
+    );
+};

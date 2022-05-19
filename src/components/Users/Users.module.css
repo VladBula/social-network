@@ -2,3 +2,7 @@
     width: 60px;
     height: 80px;
 }
+
+.selectedPage{
+    font-weight: bolder;
+}

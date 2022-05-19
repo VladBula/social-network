@@ -6,7 +6,6 @@ import Profile from "./components/Profile/Profile";
 import {Routes, Route, Link} from "react-router-dom";
 import store from "./redux/redux-store";
 import SuperDialogsContainer from "./components/Dialogs/Message/DialogsContainer";
-import Users from "./components/Users/Users";
 import {UsersType} from "./redux/users-reducer";
 import UsersContainer from "./components/Users/UsersContainer";
 
@@ -100,8 +99,13 @@ export type UpdateNewPostTextActionType = {
     newText: string
 }
 
+export type SetCurrentPageActionType = {
+    type: 'SET_CURRENT_PAGE',
+    currentPage:number
+}
+
 export type ActionType = AddPostActionType | UpdateNewPostTextActionType | UpdateNewMessageBodyActionType |
-    SendMessageActionType | followActionType | unfollowActionType | setUsersACType
+    SendMessageActionType | followActionType | unfollowActionType | setUsersACType | SetCurrentPageActionType
 
 
 
