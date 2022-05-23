@@ -4,8 +4,7 @@ import {
     PostsType,
 
 } from "../App";
-
-
+import {ProfilePageType, ProfileType} from "../components/Profile/ProfileContainer";
 
 
 let initialState = {
@@ -13,10 +12,15 @@ let initialState = {
         {id: 1, message: 'Hi, hoe are you?', likesCount: 12},
         {id: 2, message: 'It is my first post kyy', likesCount: 11},
     ] as Array<PostsType>,
-    newPostText: 'it-kamasutra'
+    newPostText: 'it-kamasutra',
+    profile: null
 }
 
-type initialStateType = typeof initialState
+type initialStateType = {
+    posts:Array<PostsType>
+    newPostText:string
+    profile: null | ProfileType
+}
 
 export const profileReducer = (state: initialStateType = initialState, action: ActionType): initialStateType => {
 
@@ -32,14 +36,15 @@ export const profileReducer = (state: initialStateType = initialState, action: A
             // stateCopy.posts.push(newPost);
             // stateCopy.newPostText = "";
             return {...state, posts: [...state.posts, newPost], newPostText: ""}
-        }
-            ;
+        };
         case 'UPDATE-NEW-POST-TEXT': {
             // let stateCopy = {...state};
             // stateCopy.newPostText = action.newText;
             return {...state, newPostText: action.newText}
+        };
+        case "SET_USER_PROFILE":{
+            return {...state, profile: action.profile}
         }
-            ;
         default :
             return state
     }
@@ -55,6 +60,11 @@ export const addPostAC = () => ({
 export const updateNewPostTextAC = (text: string) => {
     return {
         type: "UPDATE-NEW-POST-TEXT", newText: text
+    } as const
+}
+export const setUserProfile = (profile: ProfileType | null) => {
+    return {
+        type: "SET_USER_PROFILE", profile
     } as const
 }
 

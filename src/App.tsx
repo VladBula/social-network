@@ -3,11 +3,14 @@ import './App.css';
 import Header from "./components/Header/Header";
 import Navbar from "./components/Navbar/Navbar";
 import Profile from "./components/Profile/Profile";
-import {Routes, Route, Link} from "react-router-dom";
+import {Route, Link} from "react-router-dom";
 import store from "./redux/redux-store";
 import SuperDialogsContainer from "./components/Dialogs/Message/DialogsContainer";
 import {UsersType} from "./redux/users-reducer";
 import UsersContainer from "./components/Users/UsersContainer";
+import ProfileContainer, {ProfileType} from "./components/Profile/ProfileContainer";
+import {DataType} from "./redux/auth-reducer";
+import HeaderContainer from "./components/Header/HeaderContainer";
 
 export type MyPostsPropsType={
     posts:Array<PostsType>
@@ -104,8 +107,29 @@ export type SetCurrentPageActionType = {
     currentPage:number
 }
 
+export type toggleIsFetchingActionType = {
+    type: 'TOGGLE_IS_FETCHING',
+    isFetching:boolean
+}
+export type setUserProfileActionType = {
+    type: 'SET_USER_PROFILE',
+    profile: ProfileType | null
+}
+export type setUserDataActionType = {
+    type: 'SET_USER_DATA',
+    data: DataType | null
+}
+export type toggleFollowingProgressActionType = {
+    type: 'TOGGLE_IS_FOLLOWING_PROGRESS',
+    isFetching:boolean
+}
+
+
+
+
 export type ActionType = AddPostActionType | UpdateNewPostTextActionType | UpdateNewMessageBodyActionType |
-    SendMessageActionType | followActionType | unfollowActionType | setUsersACType | SetCurrentPageActionType
+    SendMessageActionType | followActionType | unfollowActionType | setUsersACType | SetCurrentPageActionType |
+    toggleIsFetchingActionType | setUserProfileActionType | setUserDataActionType | toggleFollowingProgressActionType
 
 
 
@@ -118,19 +142,17 @@ function App() {
     return (
 
         <div className='app-wrapper'>
-            <Header/>
+            <HeaderContainer/>
             <Navbar/>
 
             <div className='app-wrapper-content'>
-                <Routes>
-                    <Route path="/dialogs" element={<SuperDialogsContainer/>}/>
-                    <Route path="/profile" element={<Profile posts={state.profilePage.posts}
-                                                             newPostText={state.profilePage.newPostText}
-                                                             dispatch={store.dispatch.bind(store)}/>}/>
-                    <Route path="/users" element={<UsersContainer/>}/>
+
+                    <Route path="/dialogs" render={() => <SuperDialogsContainer/>}/>
+                    <Route path="/profile/:userId?" render={() => <ProfileContainer/>}/>
+                    <Route path="/users" render={() => <UsersContainer/>}/>
 
 
-                </Routes>
+
             </div>
 
 
