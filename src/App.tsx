@@ -121,7 +121,8 @@ export type setUserDataActionType = {
 }
 export type toggleFollowingProgressActionType = {
     type: 'TOGGLE_IS_FOLLOWING_PROGRESS',
-    isFetching:boolean
+    isFetching:boolean,
+    userId:number
 }
 
 
