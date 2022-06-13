@@ -1,5 +1,10 @@
 import React from 'react';
 import {ActionType} from "../App";
+import {ProfileType} from "../components/Profile/ProfileContainer";
+import {ThunkAction} from "redux-thunk";
+import {AppStateType} from "./redux-store";
+import {authAPI, profileAPI} from "../dal/api";
+import {setUserProfile} from "./profile-reducer";
 
 
 export type DataType = {
@@ -13,11 +18,11 @@ let initialState = {
     userId: null,
     email: null,
     login: null,
-    isAuth:false
+    isAuth: false
 
 }
 
-type initialStateType = DataType & {isAuth: boolean}
+type initialStateType = DataType & { isAuth: boolean }
 
 export const authReducer = (state: initialStateType = initialState, action: ActionType): initialStateType => {
     switch (action.type) {
@@ -25,7 +30,7 @@ export const authReducer = (state: initialStateType = initialState, action: Acti
             return {
 
                 ...state, ...action.data,
-                isAuth:true
+                isAuth: true
             }
         }
 
@@ -36,10 +41,24 @@ export const authReducer = (state: initialStateType = initialState, action: Acti
 
 }
 
-export const setUserData = (userId: number | null, email:string | null, login:string | null) => ({
+export const setUserData = (userId: number | null, email: string | null, login: string | null) => ({
     type: 'SET_USER_DATA',
-    data:{userId, email, login}
+    data: {userId, email, login}
 }) as const
 
+export const authMe = (): ThunkAction<Promise<void>, AppStateType, unknown, ActionType> => {
+    return async (dispatch) => {
+
+        authAPI.me()
+            .then(response => {
+                if (response.data.resultCode === 0) {
+                    let {id, email, login} = response.data.data;
+                    dispatch(setUserData(id, email, login))
+                }
+
+
+            })
+    }
+}
 
 

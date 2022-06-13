@@ -1,9 +1,11 @@
 import React from 'react';
 import {ActionType, toggleFollowingProgressActionType} from "../App";
-import {usersAPI} from "../dal/api";
+import {profileAPI, usersAPI} from "../dal/api";
 import {AppDispatch, AppStateType} from "./redux-store";
 import {Dispatch} from "redux";
 import {ThunkAction} from "redux-thunk";
+import {setUserProfile} from "./profile-reducer";
+import {ProfileType} from "../components/Profile/ProfileContainer";
 
 
 type LocationType = {
@@ -29,7 +31,7 @@ export type UsersType = {
 let initialState = {
      users: [ ] as Array<UsersType>,
     pageSize: 5,
-    totalUsersCount: 40,
+    totalUsersCount: 400,
     currentPage: 2,
     isFetching: false,
     followingInProgress:[0]
@@ -151,3 +153,4 @@ export const unfollow = (userId:number):ThunkAction<Promise<void>, AppStateType,
                 dispatch(toggleFollowingProgress(false,userId))
             })
     }}
+

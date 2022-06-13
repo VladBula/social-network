@@ -1,11 +1,12 @@
 import React from 'react';
 import Profile from "./Profile";
-import {PostsType} from "../../App";
-import axios from "axios";
+import {ActionType, PostsType} from "../../App";
 import {connect} from "react-redux";
 import {AppStateType} from "../../redux/redux-store";
-import {setUserProfile} from "../../redux/profile-reducer";
-import {RouteComponentProps, withRouter} from "react-router-dom";
+import {getProfile, getStatus, updateStatus} from "../../redux/profile-reducer";
+import {Redirect, RouteComponentProps, withRouter} from "react-router-dom";
+import WithAuthRedirect from "../../hoc/withAuthRedirect";
+import {compose} from "redux";
 
 export type ContactsType = {
     facebook: string | null
@@ -45,10 +46,14 @@ type PropsType = RouteComponentProps<PathParamsType> & OwnPropsType
 
 type MapStateToPropsType = {
     profile: ProfileType | null
+    status:string
+
 }
 
 type MapDispatchToPropsType = {
-    setUserProfile: (profile:ProfileType | null) => void
+    getProfile:(userId:string | undefined) => void
+    getStatus:(userId:string | undefined) => void
+    updateStatus:(status:string) => void
 }
 
 type OwnPropsType = MapStateToPropsType & MapDispatchToPropsType
@@ -61,30 +66,43 @@ type OwnPropsType = MapStateToPropsType & MapDispatchToPropsType
 class ProfileContainer extends React.Component<PropsType, AppStateType> {
     componentDidMount() {
         let userId = this.props.match.params.userId;
-        // if (!userId) {
-        //     userId = '2';
-        // }
-        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/` + userId)
-            .then(response => {
-                this.props.setUserProfile(response.data)
-            })
+        if (!userId) {
+            userId = '23685';
+        }
+        this.props.getProfile(userId)
+        this.props.getStatus(userId)
     }
 
+
+
     render() {
+
+
+
         return (
             <div>
-                <Profile {...this.props} profile={this.props.profile}/>
+                <Profile profile={this.props.profile} status={this.props.status}
+                         updateStatus={this.props.updateStatus}/>
             </div>
         )
     }
-
-
 }
 
-let WithUrlDataContainerComponent = withRouter(ProfileContainer)
-
 let mapStateToProps = (state:AppStateType):MapStateToPropsType => ({
-    profile:state.profilePage.profile
+    profile:state.profilePage.profile,
+    status:state.profilePage.status
+
 })
 
-export default connect(mapStateToProps, {setUserProfile})(WithUrlDataContainerComponent);
+export default compose<React.ComponentType>(
+    withRouter,
+    connect(mapStateToProps, {getProfile, getStatus, updateStatus}),
+)(ProfileContainer)
+
+
+
+// let WithUrlDataContainerComponent = withRouter(ProfileContainer)
+//
+//
+//
+// export default WithAuthRedirect(connect(mapStateToProps, {getProfile})(WithUrlDataContainerComponent));

@@ -41,13 +41,10 @@ class UsersAPIComponent extends React.Component<UsersContainerPropsType> {
         return <>
             {this.props.isFetching ? <Preloader/> : null}
             <Users users={this.props.users}
-                   followSuccess={this.props.followSuccess}
-                   unfollowSuccess={this.props.unfollowSuccess}
                    pageSize={this.props.pageSize}
                    totalUsersCount={this.props.totalUsersCount}
                    currentPage={this.props.currentPage}
                    onPageChanged={this.onPageChanged}
-                   toggleFollowingProgress={this.props.toggleFollowingProgress}
                    followingInProgress={this.props.followingInProgress}
                    follow={this.props.follow}
                    unfollow={this.props.unfollow}

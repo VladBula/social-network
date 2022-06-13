@@ -3,18 +3,14 @@ import s from "./Users.module.css";
 import userAnnaPhoto from "../../images/anna.jpg";
 import {UsersType} from "../../redux/users-reducer";
 import {NavLink} from "react-router-dom";
-import axios from "axios";
-import {usersAPI} from "../../dal/api";
+
 
 export type UsersPropsType = {
     users: Array<UsersType>
-    followSuccess: (userId: number) => void
-    unfollowSuccess: (userId: number) => void
     pageSize: number
     totalUsersCount: number
     currentPage: number
     onPageChanged: (p: number) => void
-    toggleFollowingProgress:(isFetching:boolean, userId:number) => void
     followingInProgress:number[]
     follow:(userId:number) => void
     unfollow:(userId:number) => void

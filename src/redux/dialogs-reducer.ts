@@ -1,5 +1,5 @@
 import React from 'react';
-import {ActionType} from "../App";
+import {ActionType, SendMessageActionType} from "../App";
 
 
 
@@ -14,22 +14,15 @@ let initialState = {
         {id: 1, message: "hi"},
         {id: 2, message: "how r u"},
     ],
-    newMessageBody: ''
 }
 
 type initialStateType = typeof initialState
 
 export const dialogReducer = (state: initialStateType = initialState, action: ActionType):initialStateType => {
     switch (action.type) {
-        case 'UPDATE-NEW-MESSAGE-BODY': {
-            // state.newMessageBody = action.body
-            return {...state, newMessageBody: action.body}
-        }
         case 'SEND-MESSAGE': {
             // let stateCopy = {...state, messages: [...state.messages]};
-              let body = state.newMessageBody;
-            // stateCopy.newMessageBody = '';
-            // stateCopy.messages.push({id: 3, message: body})
+              let body = action.newMessageBody;
             return {...state, messages: [...state.messages, {id: 3, message: body}]}
         }
         default :
@@ -39,16 +32,10 @@ export const dialogReducer = (state: initialStateType = initialState, action: Ac
 
 }
 
-export const updateNewMessageBodyAC = (body: string) => {
-    return {
-        type: 'UPDATE-NEW-MESSAGE-BODY',
-        body: body
-    } as const
-}
 
-export const sendMessageAC = () => {
+export const sendMessageAC = (newMessageBody:string):SendMessageActionType => {
     return {
-        type: 'SEND-MESSAGE'
+        type: 'SEND-MESSAGE', newMessageBody
     } as const
 }
 

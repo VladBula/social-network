@@ -9,14 +9,15 @@ import {ProfileType} from "./ProfileContainer";
 
 export type PropsType = {
     profile:ProfileType | null
-    children?: ReactNode
+    updateStatus:(status:string) => void
+    status:string
 }
 
 const Profile = (props:PropsType) => {
 
 
     return <div>
-        <ProfileInfo profile={props.profile}/>
+        <ProfileInfo profile={props.profile} status={props.status} updateStatus={props.updateStatus}/>
 
         <MyPostsContainer />
     </div>

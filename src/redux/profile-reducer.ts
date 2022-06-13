@@ -5,6 +5,9 @@ import {
 
 } from "../App";
 import {ProfilePageType, ProfileType} from "../components/Profile/ProfileContainer";
+import {ThunkAction} from "redux-thunk";
+import {AppStateType} from "./redux-store";
+import {profileAPI} from "../dal/api";
 
 
 let initialState = {
@@ -13,13 +16,15 @@ let initialState = {
         {id: 2, message: 'It is my first post kyy', likesCount: 11},
     ] as Array<PostsType>,
     newPostText: 'it-kamasutra',
-    profile: null
+    profile: null,
+    status: ""
 }
 
 type initialStateType = {
-    posts:Array<PostsType>
-    newPostText:string
+    posts: Array<PostsType>
+    newPostText: string
     profile: null | ProfileType
+    status: string
 }
 
 export const profileReducer = (state: initialStateType = initialState, action: ActionType): initialStateType => {
@@ -28,21 +33,15 @@ export const profileReducer = (state: initialStateType = initialState, action: A
         case 'ADD-POST': {
             let newPost = {
                 id: 5,
-                message: state.newPostText,
+                message: action.newPostText,
                 likesCount: 0,
             };
-            // let stateCopy = {...state}
-            // stateCopy.posts = [...state.posts]
-            // stateCopy.posts.push(newPost);
-            // stateCopy.newPostText = "";
             return {...state, posts: [...state.posts, newPost], newPostText: ""}
-        };
-        case 'UPDATE-NEW-POST-TEXT': {
-            // let stateCopy = {...state};
-            // stateCopy.newPostText = action.newText;
-            return {...state, newPostText: action.newText}
-        };
-        case "SET_USER_PROFILE":{
+        }
+        case 'SET_STATUS': {
+            return {...state, status: action.status}
+        }
+        case "SET_USER_PROFILE": {
             return {...state, profile: action.profile}
         }
         default :
@@ -52,22 +51,57 @@ export const profileReducer = (state: initialStateType = initialState, action: A
 
 };
 
-export const addPostAC = () => ({
-    type: 'ADD-POST'
+export const addPostAC = (newPostText:string) => ({
+    type: 'ADD-POST',newPostText
 }) as const
 
-
-export const updateNewPostTextAC = (text: string) => {
-    return {
-        type: "UPDATE-NEW-POST-TEXT", newText: text
-    } as const
-}
 export const setUserProfile = (profile: ProfileType | null) => {
     return {
         type: "SET_USER_PROFILE", profile
     } as const
 }
 
+export const setStatus = (status: string) => {
+    return {
+        type: "SET_STATUS", status
+    } as const
+}
+
+export const getProfile = (userId: string | undefined): ThunkAction<Promise<void>, AppStateType, unknown, ActionType> => {
+    return async (dispatch) => {
+
+        profileAPI.getProfile(userId)
+            .then(response => {
+                dispatch(setUserProfile(response.data))
+
+            })
+    }
+}
+
+export const getStatus = (userId: string | undefined): ThunkAction<Promise<void>, AppStateType, unknown, ActionType> => {
+    return async (dispatch) => {
+
+        profileAPI.getStatus(userId)
+            .then(response => {
+                dispatch(setStatus(response.data))
+
+            })
+    }
+}
+
+export const updateStatus = (status: string): ThunkAction<Promise<void>, AppStateType, unknown, ActionType> => {
+    return async (dispatch) => {
+
+        profileAPI.updateStatus(status)
+            .then(response => {
+                if (response.data.resultCode == 0) {
+                    dispatch(setStatus(status))
+                }
+
+
+            })
+    }
+}
 
 // export type ActionType = AddPostActionType | UpdateNewPostTextActionType | SendMessageType | UpdateNewMessageBodyType
 //

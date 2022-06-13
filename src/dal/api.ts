@@ -17,15 +17,28 @@ export const usersAPI = {
         })
     },
     follow(id:number){
-        return instance.post(`https://social-network.samuraijs.com/api/1.0/follow/${id}`)
+        return instance.post(`follow/${id}`)
     },
     unfollow(id:number){
-      return instance.delete(`https://social-network.samuraijs.com/api/1.0/follow/${id}`)
+      return instance.delete(`follow/${id}`)
     },
 }
 
 export const profileAPI = {
-    getProfile(){
+    getProfile(userId:string | undefined){
+        return instance.get(`profile/` + userId)
+    },
+    getStatus(userId:string | undefined){
+        return instance.get(`profile/status/${userId}`)
+    },
+    updateStatus(status:string){
+        return instance.put(`profile/status`, {status})
+    }
+}
+
+export const authAPI = {
+    me(){
+        return instance.get(`auth/me`)
 
     }
 }

@@ -4,16 +4,15 @@ import {connect} from "react-redux";
 import {AppStateType} from "../../redux/redux-store";
 import {
     follow,
-    followSuccess,
     getUsers,
     setCurrentPage,
-    setUsers, toggleFollowingProgress,
-    toggleIsFetching, unfollow, unfollowSuccess,
-
+    unfollow,
     UsersType
 } from "../../redux/users-reducer";
 
 import UsersAPIComponent from "./UsersAPIComponent";
+import {compose} from "redux";
+import WithAuthRedirect from "../../hoc/withAuthRedirect";
 
 
 type mapStateToPropsType = {
@@ -26,12 +25,9 @@ type mapStateToPropsType = {
 }
 
 type mapDispatchToPropsType = {
-    followSuccess: (userId: number) => void,
-    unfollowSuccess: (userId: number) => void,
-    setUsers: (users: Array<UsersType>) => void
+
     setCurrentPage: (pageNumber: number) => void
-    toggleIsFetching: (isFetching: boolean) => void
-    toggleFollowingProgress:(isFetching:boolean, userId:number) => void
+
     getUsers:(currentPage:number,pageSize:number) => void
     follow:(userId:number) => void
     unfollow:(userId:number) => void
@@ -74,16 +70,13 @@ const mapStateToProps = (state: AppStateType): mapStateToPropsType => {
 //     }
 // }
 
-const UsersContainer = connect(mapStateToProps, {
-    followSuccess,
-    unfollowSuccess,
-    setUsers,
+
+
+export default compose<React.ComponentType>(
+    WithAuthRedirect,
+    connect(mapStateToProps, {
     setCurrentPage,
-    toggleIsFetching,
-    toggleFollowingProgress,
     getUsers,
     follow,
     unfollow
-})(UsersAPIComponent)
-
-export default UsersContainer;
+}))(UsersAPIComponent);
