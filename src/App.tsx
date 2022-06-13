@@ -106,7 +106,7 @@ export type setUserProfileActionType = {
 }
 export type setUserDataActionType = {
     type: 'SET_USER_DATA',
-    data: DataType | null
+    payload: DataType | null
 }
 export type toggleFollowingProgressActionType = {
     type: 'TOGGLE_IS_FOLLOWING_PROGRESS',

@@ -20,7 +20,7 @@ type mapStateToPropsType ={
 const mapStateToProps = (state:AppStateType) : mapStateToPropsType => {
     return {
         dialogs: state.dialogsPage.dialogs,
-        messages: state.dialogsPage.messages
+        messages: state.dialogsPage.messages,
 
     }
 }
