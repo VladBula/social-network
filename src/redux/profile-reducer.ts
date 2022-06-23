@@ -67,7 +67,7 @@ export const setStatus = (status: string) => {
     } as const
 }
 
-export const getProfile = (userId: string | undefined): ThunkAction<void, AppStateType, unknown, ActionType> => {
+export const getProfile = (userId: number | null): ThunkAction<void, AppStateType, unknown, ActionType> => {
     return (dispatch) => {
 
         profileAPI.getProfile(userId)
@@ -78,7 +78,7 @@ export const getProfile = (userId: string | undefined): ThunkAction<void, AppSta
     }
 }
 
-export const getStatus = (userId: string | undefined): ThunkAction<void, AppStateType, unknown, ActionType> => {
+export const getStatus = (userId: number | null): ThunkAction<void, AppStateType, unknown, ActionType> => {
     return (dispatch) => {
 
         profileAPI.getStatus(userId)

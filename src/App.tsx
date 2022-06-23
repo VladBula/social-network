@@ -1,15 +1,19 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import Navbar from "./components/Navbar/Navbar";
-import {Route, Link} from "react-router-dom";
-import store from "./redux/redux-store";
+import {Route, Link, withRouter} from "react-router-dom";
+import store, {AppDispatchForThunk, AppStateType} from "./redux/redux-store";
 import SuperDialogsContainer from "./components/Dialogs/Message/DialogsContainer";
 import {UsersType} from "./redux/users-reducer";
 import UsersContainer from "./components/Users/UsersContainer";
 import ProfileContainer, {ProfileType} from "./components/Profile/ProfileContainer";
-import {DataType} from "./redux/auth-reducer";
+import {DataType, getAuthUserData, logout} from "./redux/auth-reducer";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import Login from "./components/Login/Login";
+import {connect, useDispatch} from "react-redux";
+import {compose} from "redux";
+import {initializeApp} from "./redux/app-reducer";
+import Preloader from "./components/Common/Preloader/Preloader";
 
 export type MyPostsPropsType = {
     posts: Array<PostsType>
@@ -84,11 +88,11 @@ export type unfollowActionType = {
 }
 
 export type SendMessageActionType = {
-    type: 'SEND-MESSAGE',newMessageBody:string
+    type: 'SEND-MESSAGE', newMessageBody: string
 }
 
 export type AddPostActionType = {
-    type: 'ADD-POST',newPostText:string
+    type: 'ADD-POST', newPostText: string
 }
 
 export type SetCurrentPageActionType = {
@@ -115,39 +119,75 @@ export type toggleFollowingProgressActionType = {
 }
 
 export type setStatusType = {
-    type:'SET_STATUS',
-    status:string
+    type: 'SET_STATUS',
+    status: string
 }
 
-export type ActionType = AddPostActionType | SendMessageActionType | followActionType | unfollowActionType | setUsersACType | SetCurrentPageActionType |
-    toggleIsFetchingActionType | setUserProfileActionType | setUserDataActionType | toggleFollowingProgressActionType |
-    setStatusType
+export type initializedSuccessType = {
+    type: 'INITIALIZED_SUCCESS'
+}
 
+export type ActionType =
+    AddPostActionType
+    | SendMessageActionType
+    | followActionType
+    | unfollowActionType
+    | setUsersACType
+    | SetCurrentPageActionType
+    | toggleIsFetchingActionType
+    | setUserProfileActionType
+    | setUserDataActionType
+    | toggleFollowingProgressActionType
+    | setStatusType
+    | initializedSuccessType
 
-function App() {
+type MapStateToPropsType = {
+    initialized:boolean
+}
 
-    const state = store.getState();
+type MapDispatchToPropsType = {
+    initializeApp: () => void
+}
 
-    return (
+type AppPropsType = MapStateToPropsType & MapDispatchToPropsType
 
-        <div className='app-wrapper'>
-            <HeaderContainer/>
-            <Navbar/>
+class App extends React.Component<AppPropsType, AppStateType> {
 
-            <div className='app-wrapper-content'>
+    componentDidMount() {
+        this.props.initializeApp()
+    }
 
-                <Route path="/dialogs" render={() => <SuperDialogsContainer/>}/>
-                <Route path="/profile/:userId?" render={() => <ProfileContainer/>}/>
-                <Route path="/users" render={() => <UsersContainer/>}/>
-                <Route path="/login" render={() => <Login/>}/>
+    render() {
 
+        if (!this.props.initialized){
+            return <Preloader/>
+        }
 
+        return (
+
+            <div className='app-wrapper'>
+                <HeaderContainer/>
+                <Navbar/>
+
+                <div className='app-wrapper-content'>
+
+                    <Route path="/dialogs" render={() => <SuperDialogsContainer/>}/>
+                    <Route path="/profile/:userId?" render={() => <ProfileContainer/>}/>
+                    <Route path="/users" render={() => <UsersContainer/>}/>
+                    <Route path="/login" render={() => <Login/>}/>
+
+                </div>
             </div>
 
-
-        </div>
-
-    );
+        );
+    }
 }
 
-export default App;
+const mapStateToProps = (state:AppStateType):MapStateToPropsType => ({
+    initialized:state.app.initialized
+})
+
+export default compose<React.ComponentType>(
+    withRouter,
+    connect(mapStateToProps, {initializeApp}))(App);
+;

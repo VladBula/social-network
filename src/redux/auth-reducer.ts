@@ -1,10 +1,10 @@
 import React from 'react';
 import {ActionType} from "../App";
-import {ProfileType} from "../components/Profile/ProfileContainer";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./redux-store";
 import {authAPI, profileAPI} from "../dal/api";
-import {setUserProfile} from "./profile-reducer";
+import {stopSubmit} from "redux-form";
+import {FormAction} from "redux-form/lib/actions";
 
 
 export type DataType = {
@@ -48,25 +48,30 @@ export const setAuthUserData = (userId: number | null, email: string | null, log
 export const getAuthUserData = (): ThunkAction<Promise<void>, AppStateType, unknown, ActionType> => {
     return async (dispatch) => {
 
-        authAPI.me()
+      return authAPI.me()
             .then(response => {
                 if (response.data.resultCode === 0) {
                     let {id, email, login} = response.data.data;
                     dispatch(setAuthUserData(id, email, login, true))
                 }
-
-
             })
     }
 }
 
-export const login = (email:string, password:string, rememberMe:boolean): ThunkAction<void, AppStateType, unknown, ActionType> => {
+export const login = (email:string, password:string, rememberMe:boolean): ThunkAction<void, AppStateType, unknown, ActionType | FormAction> => {
     return (dispatch) => {
 
         authAPI.login(email, password, rememberMe)
             .then(response => {
                 if (response.data.resultCode === 0) {
                     dispatch(getAuthUserData())
+                } else {
+                    if (response.data.messages.length) {
+                        dispatch(stopSubmit('login', {_error: response.data.messages[0]}))
+                    } else {
+                        dispatch(stopSubmit('login', {_error: "Some error"}))
+                    }
+
                 }
             })
     }
