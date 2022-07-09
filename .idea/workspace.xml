@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f28fe27b-76d8-4a08-9a81-d4ccbe1ff865" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/redux/users-reducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/users-reducer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Profile/ProfileInfo/ProfileStatus.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Profile/ProfileInfo/ProfileStatus.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,7 +18,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$USER_HOME$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
@@ -121,6 +122,14 @@
       <workItem from="1645520497126" duration="2772000" />
       <workItem from="1645532692354" duration="596000" />
       <workItem from="1647121851592" duration="1227000" />
+      <workItem from="1656160687764" duration="1435000" />
+      <workItem from="1656178769162" duration="2105000" />
+      <workItem from="1656187278267" duration="606000" />
+      <workItem from="1656337746271" duration="3176000" />
+      <workItem from="1656417228096" duration="1562000" />
+      <workItem from="1656449390711" duration="603000" />
+      <workItem from="1656502232741" duration="2500000" />
+      <workItem from="1656682149858" duration="616000" />
     </task>
     <servers />
   </component>
